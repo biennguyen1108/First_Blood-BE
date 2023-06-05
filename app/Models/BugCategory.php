@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class BugCategory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'username',
-        'password',
-        'email',
-        'role',
+        'category_name',
+        'description',
     ];
 }
