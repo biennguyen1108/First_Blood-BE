@@ -2,18 +2,39 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\BugTrackingController;
+use App\Http\Controllers\Api\BugController;
+use App\Http\Controllers\Api\ActionController;
+use App\Http\Controllers\Api\BugCommentController;
+use App\Http\Controllers\Api\BugHistoryController;
+use App\Http\Controllers\Api\BugAssigneeController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+    // Routes for users
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
+    // Routes for projects
+    Route::get('/projects', [ProjectController::class, 'index']);
+    Route::get('/projects/{id}', [ProjectController::class, 'show']);
+    Route::post('/projects', [ProjectController::class, 'store']);
+    Route::put('/projects/{id}', [ProjectController::class, 'update']);
+    Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
+
+    //routes for Bugs
+    Route::get('/bugs', [BugController::class, 'index']);
+    Route::get('/bugs/{id}', [BugController::class, 'show']);
+    Route::post('/bugs', [BugController::class, 'store']);
+    Route::put('/bugs/{id}', [BugController::class, 'update']);
+    Route::delete('/bugs/{id}', [BugController::class, 'destroy']);
+
+
+
+
+
+
