@@ -1,15 +1,13 @@
 <?php
 
+
+use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProjectController;
-use App\Http\Controllers\Api\BugTrackingController;
 use App\Http\Controllers\Api\BugController;
-use App\Http\Controllers\Api\ActionController;
-use App\Http\Controllers\Api\BugCommentController;
-use App\Http\Controllers\Api\BugHistoryController;
-use App\Http\Controllers\Api\BugAssigneeController;
+
 
 
     // Routes for users
@@ -35,6 +33,7 @@ use App\Http\Controllers\Api\BugAssigneeController;
 
 
 
-
+    Route::post('login', [LoginController::class, 'login']);
+    // Route::get('/login', [LoginController::class, 'login']);
 
 
