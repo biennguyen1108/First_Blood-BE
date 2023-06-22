@@ -1,7 +1,6 @@
 <?php
 
 
-use App\Http\Controllers\BugController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
