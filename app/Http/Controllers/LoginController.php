@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 
+
 class LoginController extends Controller
 {
     public function login(Request $request)
@@ -18,7 +19,7 @@ class LoginController extends Controller
             return response()->json(['error' => 'Invalid username'], 401);
 
         }
-        
+
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
