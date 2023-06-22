@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Requests\BugRequest;
 use App\Models\Bug;
 use Illuminate\Http\Request;
 
@@ -11,41 +11,23 @@ class BugController extends Controller
     public function index()
     {
         $bugs = Bug::all();
-        return response()->json($bugs);
+        return $this->commonResponse($bugs);
     }
 
     public function show($id)
     {
         $bug = Bug::find($id);
         if (!$bug) {
-            return response()->json(['message' => 'Bug not found'], 404);
+            return $this->commonResponse([],'Bug not found',401);
         }
-        return response()->json($bug);
+        return $this->commonResponse($bug);
     }
 
-    public function store(Request $request)
+    public function store(BugRequest $bugRequest)
     {
-        $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'category_id' => 'required|exists:bug_categories,id',
-            'status_id' => 'required|exists:status,id',
-            'priority_id' => 'required|exists:priority,id',
-            'title' => 'required',
-            'description' => 'required',
-            'reporter_by' => 'required|exists:users,id',
-            'assigned_to' => 'required|exists:users,id',
-        ]);
 
-        $bug = Bug::create([
-            'project_id' => $request->input('project_id'),
-            'category_id' => $request->input('category_id'),
-            'status_id' => $request->input('status_id'),
-            'priority_id' => $request->input('priority_id'),
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'reporter_by' => $request->input('reporter_by'),
-            'assigned_to' => $request->input('assigned_to'),
-        ]);
+
+        $bug = Bug::create([$bugRequest->all()]);
 
         return response()->json($bug, 201);
     }

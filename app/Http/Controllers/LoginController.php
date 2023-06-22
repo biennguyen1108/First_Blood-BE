@@ -22,9 +22,9 @@ class LoginController extends Controller
 
         $token = $user->createToken('authToken')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-            'token' => $token
-        ]);
+        return $this->commonResponse([
+            'user'=>$user,
+            'accessToken'=>$token,
+        ],'logged in',200);
     }
 }
