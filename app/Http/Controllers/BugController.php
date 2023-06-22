@@ -22,13 +22,9 @@ class BugController extends Controller
         }
         return $this->commonResponse($bug);
     }
-
     public function store(BugRequest $bugRequest)
     {
-
-
         $bug = Bug::create([$bugRequest->all()]);
-
         return response()->json($bug, 201);
     }
 
