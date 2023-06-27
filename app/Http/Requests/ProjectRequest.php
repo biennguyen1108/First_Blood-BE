@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BugRequest extends FormRequest
+class ProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +22,9 @@ class BugRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'project_id' => 'required|exists:projects,id',
-            'category_id' => 'required|exists:bug_categories,id',
-            'status_id' => 'required|exists:status,id',
-            'priority_id' => 'required|exists:priority,id',
-            'title' => 'required',
+            'project_name' => 'required',
             'description' => 'required',
-            'reporter_by' => 'required|exists:users,id',
-            'assigned_to' => 'required|exists:users,id',
-            
+            'created_by' => 'required|exists:users,id',
         ];
     }
 }

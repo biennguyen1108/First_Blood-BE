@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -10,65 +11,45 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::all();
-        return response()->json($projects);
+        return $this->commonResponse($projects);
+
     }
 
     public function show($id)
     {
         $project = Project::find($id);
         if (!$project) {
-            return response()->json(['message' => 'Project not found'], 404);
+            return  $this->commonResponse($project,"Project not found",401);
         }
-        return response()->json($project);
+        return  $this->commonResponse($project);
+
     }
 
-    public function store(Request $request)
+    public function store(ProjectRequest $projectrequest)
     {
-        $request->validate([
-            'project_name' => 'required',
-            'description' => 'required',
-            'created_by' => 'required|exists:users,id',
-        ]);
-
-        $project = Project::create([
-            'project_name' => $request->input('project_name'),
-            'description' => $request->input('description'),
-            'created_by' => $request->input('created_by'),
-        ]);
-
-        return response()->json($project, 201);
+        $project = Project::create([$projectrequest->all()]);
+        return  $this->commonResponse($project,"",200);
     }
 
-    public function update(Request $request, $id)
+    public function update(ProjectRequest $projectrequest, $id)
     {
-        $project = Project::find($id);
-        if (!$project) {
-            return response()->json(['message' => 'Project not found'], 404);
+        $projectrequest = Project::find($id);
+        if (!$projectrequest) {
+            return  $this->commonResponse($projectrequest,"Project not found",200);
         }
-
-        $request->validate([
-            'project_name' => 'required',
-            'description' => 'required',
-            'created_by' => 'required|exists:users,id',
-        ]);
-
-        $project->project_name = $request->input('project_name');
-        $project->description = $request->input('description');
-        $project->created_by = $request->input('created_by');
-        $project->save();
-
-        return response()->json($project);
+        Project::where('id',$id)->update($projectrequest->toArray());
+        return  $this->commonResponse($projectrequest);
     }
 
     public function destroy($id)
     {
         $project = Project::find($id);
         if (!$project) {
-            return response()->json(['message' => 'Project not found'], 404);
+            return $this->commonResponse([],"Project not found",404);
         }
 
         $project->delete();
 
-        return response()->json(['message' => 'Project deleted']);
+        return $this->commonResponse([],"delete project",400);
     }
 }

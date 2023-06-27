@@ -3,74 +3,52 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::all();
-        return response()->json($users);
+        return $this->commonResponse($users);
     }
 
     public function show($id)
     {
         $user = User::find($id);
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return $this->commonResponse($user,"User not found",401);
         }
-        return response()->json($user);
+        return $this->commonResponse($user);
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $userrequest)
     {
-        $request->validate([
-            'username' => 'required|unique:users',
-            'password' => 'required',
-            'email' => 'required|email|unique:users',
-            'role' => 'required'
-        ]);
+        $user = User::create([$userrequest->all()]);
 
-        $user = User::create([
-            'username' => $request->input('username'),
-            'password' => bcrypt($request->input('password')),
-            'email' => $request->input('email'),
-            'role' => $request->input('role')
-        ]);
-
-        return response()->json($user, 201);
+        return $this->commonResponse($user,"",200);
     }
 
-    public function update(Request $request, $id)
+    public function update(UserRequest $userrequest, $id)
     {
         $user = User::find($id);
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return $this->commonResponse($userrequest,"User not found",200);
         }
 
-        $request->validate([
-            'username' => 'required|unique:users,username,' . $id,
-            'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required'
-        ]);
-
-        $user->username = $request->input('username');
-        $user->email = $request->input('email');
-        $user->role = $request->input('role');
-        $user->save();
-
-        return response()->json($user);
+        User::where('id',$id)->update($userrequest->toArray());
+        return  $this->commonResponse($userrequest);
     }
 
     public function destroy($id)
     {
         $user = User::find($id);
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+         return $this->commonResponse([],"User not found",404);
         }
 
         $user->delete();
 
-        return response()->json(['message' => 'User deleted']);
+        return $this->commonResponse([],"User not found",404);
     }
 }

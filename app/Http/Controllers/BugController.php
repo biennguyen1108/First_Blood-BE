@@ -25,49 +25,29 @@ class BugController extends Controller
     public function store(BugRequest $bugRequest)
     {
         $bug = Bug::create([$bugRequest->all()]);
-        return response()->json($bug, 201);
+        return  $this->commonResponse($bug,"",200);
     }
 
-    public function update(Request $request, $id)
+    public function update(BugRequest $bugrequest, $id)
     {
-        $bug = Bug::find($id);
-        if (!$bug) {
-            return response()->json(['message' => 'Bug not found'], 404);
+        $bugrequest= Bug::find($id);
+        if (!$bugrequest) {
+            return  $this->commonResponse([],"Bug not foundBug not found",404);
         }
-
-        $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'category_id' => 'required|exists:bug_categories,id',
-            'status_id' => 'required|exists:status,id',
-            'priority_id' => 'required|exists:priority,id',
-            'title' => 'required',
-            'description' => 'required',
-            'reporter_by' => 'required|exists:users,id',
-            'assigned_to' => 'required|exists:users,id',
-        ]);
-
-        $bug->project_id = $request->input('project_id');
-        $bug->category_id = $request->input('category_id');
-        $bug->status_id = $request->input('status_id');
-        $bug->priority_id = $request->input('priority_id');
-        $bug->title = $request->input('title');
-        $bug->description = $request->input('description');
-        $bug->reporter_by = $request->input('reporter_by');
-        $bug->assigned_to = $request->input('assigned_to');
-        $bug->save();
-
-        return response()->json($bug);
+        Bug::where('id',$id)->update($bugrequest->toArray());
+        // $bugrequest->save();
+        return $this->commonResponse($bugrequest);
     }
 
     public function destroy($id)
     {
         $bug = Bug::find($id);
         if (!$bug) {
-            return response()->json(['message' => 'Bug not found'], 404);
+            return $this->commonResponse([],"Bug not foundBug not found",404);
         }
 
         $bug->delete();
 
-        return response()->json(['message' => 'Bug deleted']);
+        return $this->commonResponse([],"delete bug",400);
     }
 }
