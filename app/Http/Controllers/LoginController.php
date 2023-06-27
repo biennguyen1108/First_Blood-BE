@@ -14,7 +14,7 @@ class LoginController extends Controller
 {
     public function login(LoginRequest $loginrequest)
     {
-        $user = User::where('username', $loginrequest->username)->first();
+        $user = User::where('email', $loginrequest->email)->first();
 
         if(!$user || !Hash::check($loginrequest->password,$user->password)){
             return $this->commonResponse([],"Invalid username",404);
@@ -23,7 +23,6 @@ class LoginController extends Controller
         $token = $user->createToken('authToken')->plainTextToken;
 
         return $this->commonResponse([
-            'user'=>$user,
             'accessToken'=>$token,
         ],'logged in',200);
     }
