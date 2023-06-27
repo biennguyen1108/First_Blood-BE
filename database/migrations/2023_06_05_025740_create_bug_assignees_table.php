@@ -15,7 +15,6 @@ class CreateBugAssigneesTable extends Migration
             $table->date('assigned_date');
             $table->date('resolved_date')->nullable();
             $table->timestamps();
-
             $table->foreign('bug_id')->references('id')->on('bugs');
             $table->foreign('user_id')->references('id')->on('users');
         });

@@ -12,7 +12,6 @@ class UserController extends Controller
         $users = User::all();
         return response()->json($users);
     }
-
     public function show($id)
     {
         $user = User::find($id);
@@ -21,7 +20,6 @@ class UserController extends Controller
         }
         return response()->json($user);
     }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -30,7 +28,6 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'role' => 'required'
         ]);
-
         $user = User::create([
             'username' => $request->input('username'),
             'password' => bcrypt($request->input('password')),
@@ -40,14 +37,12 @@ class UserController extends Controller
 
         return response()->json($user, 201);
     }
-
     public function update(Request $request, $id)
     {
         $user = User::find($id);
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
-
         $request->validate([
             'username' => 'required|unique:users,username,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
@@ -70,7 +65,6 @@ class UserController extends Controller
         }
 
         $user->delete();
-
         return response()->json(['message' => 'User deleted']);
     }
 }

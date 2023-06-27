@@ -7,13 +7,16 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-
+Route::middleware('auth:sanctum')->group(function () {
 // Routes for users
-    Route::get('users', [UserController::class, 'index']);
-    Route::get('users/{id}', [UserController::class, 'show']);
-    Route::post('users', [UserController::class, 'store']);
-    Route::put('users/{id}', [UserController::class, 'update']);
-    Route::delete('users/{id}', [UserController::class, 'destroy']);
+    Route::controller(UserController::class)->group(function () {
+
+        Route::get('users', 'index');
+        Route::get('users/{id}', 'show');
+        Route::post('users', 'store');
+        Route::put('users/{id}', 'update');
+        Route::delete('users/{id}', 'destroy');
+    });
 
     // Routes for projects
     Route::get('projects', [ProjectController::class, 'index']);
@@ -30,8 +33,11 @@ use Illuminate\Support\Facades\Route;
     Route::delete('bugs/{id}', [BugController::class, 'destroy']);
 
 
+});
 
-    Route::post('login', [LoginController::class, 'login']);
+
+Route::post('login', [LoginController::class, 'login']);
+Route::get('quan', [ProjectController::class, 'getProject']);
 
 
 

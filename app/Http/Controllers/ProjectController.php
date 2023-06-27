@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class ProjectController extends Controller
 {
@@ -66,9 +68,16 @@ class ProjectController extends Controller
         if (!$project) {
             return response()->json(['message' => 'Project not found'], 404);
         }
-
         $project->delete();
-
         return response()->json(['message' => 'Project deleted']);
     }
+
+    public function getProject(){
+
+        $user_id = Auth::user()->id;
+        return response()->json($user_id);
+
+
+    }
 }
+
