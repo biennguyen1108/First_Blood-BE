@@ -11,9 +11,7 @@ class User extends Model
     use HasFactory,HasApiTokens;
 
     protected $fillable = [
-        'username',
         'password',
         'email',
-        'role',
     ];
 }

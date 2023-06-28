@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -24,8 +25,12 @@ class UserController extends Controller
 
     public function store(UserRequest $userrequest)
     {
-        $user = User::create([$userrequest->all()]);
 
+        $user = User::create([
+            'password'=> Hash::make($userrequest->password),
+            'email' => $userrequest->email,
+            'role' => $userrequest->role
+        ]);
         return $this->commonResponse($user,"",200);
     }
 
