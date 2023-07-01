@@ -28,8 +28,10 @@ class ProjectController extends Controller
     public function store(ProjectRequest $projectrequest)
     {
         $project = Project::create([$projectrequest->all()]);
-        $project_user = 
-        return  $this->commonResponse($project,"",200);
+        if($project->fails()){
+            return  $this->commonResponse([],"Project Not Found",400);
+        }
+    return  $this->commonResponse($project,"",200);
     }
 
     public function update(ProjectRequest $projectrequest, $id)

@@ -27,10 +27,12 @@ class UserController extends Controller
     public function store(UserRequest $userrequest)
     {
         $userrequest['password'] = Hash::make($userrequest->password);
-
         $user = User::create($userrequest->all());
+        if($user->fails()){
+            return  $this->commonResponse([],"User Not Found",400);
+        }
+          return  $this->commonResponse($user,"",200);
 
-        return $this->commonResponse($user, "", 200);
     }
 
     public function update(UserRequest $userupdaterequest, $id)
