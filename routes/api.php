@@ -39,6 +39,8 @@ Route::post('login', [LoginController::class, 'login']);
 
 //Route::get('user/{id}','show');
 
-Route::middleware(["auth:sanctum", "check-role:2"])->get('user/{id}', [UserController::class, 'show']);
+Route::middleware(["auth:sanctum", "check-role:1"])->get('user/{id}', [UserController::class, 'show']);
 Route::post('user', [UserController::class, 'store']);
 Route::post('create_role_user', [\App\Http\Controllers\RoleUserController::class, 'store']);
+
+

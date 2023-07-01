@@ -33,7 +33,7 @@ class UserController extends Controller
         return $this->commonResponse($user, "", 200);
     }
 
-    public function update(UserUpdateRequest $userupdaterequest, $id)
+    public function update(UserRequest $userupdaterequest, $id)
     {
         $user = User::find($id);
         if (!$user) {

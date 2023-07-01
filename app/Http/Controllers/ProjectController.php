@@ -28,6 +28,7 @@ class ProjectController extends Controller
     public function store(ProjectRequest $projectrequest)
     {
         $project = Project::create([$projectrequest->all()]);
+        $project_user = 
         return  $this->commonResponse($project,"",200);
     }
 
