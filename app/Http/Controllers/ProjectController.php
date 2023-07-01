@@ -52,4 +52,5 @@ class ProjectController extends Controller
 
         return $this->commonResponse([],"delete project",400);
     }
+
 }
