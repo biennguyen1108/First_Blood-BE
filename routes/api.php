@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete('bug/{id}', 'destroy');
         });
     });
+    Route::get('project_byuser',[\App\Http\Controllers\GetProjectUser::class,'index']);
 
 
 });
