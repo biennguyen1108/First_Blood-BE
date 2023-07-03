@@ -31,7 +31,6 @@ class ProjectController extends Controller
         $data = $projectrequest->all();
         $data["create_by"] = auth()->user()->id;
         $project = Project::create($data);
-
         $project_user = new ProjectUser();
         $project_user->project_id = $project->id;
         $project_user->user_id = auth()->user()->id;
