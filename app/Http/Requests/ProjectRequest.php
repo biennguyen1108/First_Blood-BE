@@ -22,9 +22,9 @@ class ProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'project_name' => 'required',
-            'description' => 'required',
-            'created_by' => 'required|exists:users,id',
+//            'project_name' => 'required',
+//            'description' => 'required',
+//            'created_by' => 'required|exists:users,id',
         ];
     }
 }

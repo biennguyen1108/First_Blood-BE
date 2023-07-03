@@ -12,6 +12,9 @@ class CreateProjectsTable extends Migration
             $table->increments('id');
             $table->string('project_name');
             $table->text('description');
+            $table->unsignedInteger('create_by');
+
+            $table->foreign('create_by')->references('id')->on('users');
             $table->timestamps();
         });
     }

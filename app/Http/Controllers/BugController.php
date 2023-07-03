@@ -38,7 +38,7 @@ class BugController extends Controller
             return  $this->commonResponse([],"Bug not foundBug not found",404);
         }
         Bug::where('id',$id)->update($bugrequest->toArray());
-        // $bugrequest->save();
+
         return $this->commonResponse($bugrequest);
     }
 

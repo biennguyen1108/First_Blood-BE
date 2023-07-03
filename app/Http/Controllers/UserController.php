@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use  Carbon\Carbon;
 class UserController extends Controller
@@ -22,6 +23,10 @@ class UserController extends Controller
             return $this->commonResponse($user, "User not found", 401);
         }
         return $this->commonResponse($user);
+    }
+    public function getCurrentUser(){
+        $current_user = auth()->user();
+        return $this->commonResponse($current_user);
     }
 
     public function store(UserRequest $userrequest)

@@ -15,5 +15,11 @@ class User extends Model
         'email',
         'role'
     ];
+    protected $hidden = ['password'];
+
+    public function User()
+    {
+        return $this->hasOne(Project::class);
+    }
 
 }

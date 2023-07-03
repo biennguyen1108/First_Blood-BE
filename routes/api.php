@@ -17,8 +17,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::controller(ProjectController::class)->group(function () {
             Route::get('projects', 'index');
-            Route::get('project/{id}', 'show');
             Route::post('project', 'store');
+            Route::get('project/{id}', 'show');
             Route::put('project/{id}', 'update');
             Route::delete('project/{id}', 'destroy');
         });
@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
         });
     });
     Route::get('project_byuser',[\App\Http\Controllers\GetProjectUser::class,'index']);
+
+
 });
 //
 //Route::post('user','store');
@@ -42,5 +44,6 @@ Route::post('login', [LoginController::class, 'login']);
 Route::middleware(["auth:sanctum", "check-role:1"])->get('user/{id}', [UserController::class, 'show']);
 Route::post('user', [UserController::class, 'store']);
 Route::post('create_role_user', [\App\Http\Controllers\RoleUserController::class, 'store']);
+Route::post('add_member',[ProjectController::class,'addUserIntoProject']);
 
 
