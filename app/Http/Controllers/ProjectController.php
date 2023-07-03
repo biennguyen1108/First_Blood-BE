@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
+use App\Models\ProjectUser;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -27,7 +28,15 @@ class ProjectController extends Controller
 
     public function store(ProjectRequest $projectrequest)
     {
-        $project = Project::create([$projectrequest->all()]);
+        $data = $projectrequest->all();
+        $data["create_by"] = auth()->user()->id;
+        $project = Project::create($data);
+
+        $project_user = new ProjectUser();
+        $project_user->project_id = $project->id;
+        $project_user->user_id = auth()->user()->id;
+        $project_user->role = 1;
+        $project_user->save();
         return  $this->commonResponse($project,"",200);
     }
 
@@ -51,6 +60,22 @@ class ProjectController extends Controller
         $project->delete();
 
         return $this->commonResponse([],"delete project",400);
+    }
+
+    public function addUserIntoProject(Request $request){
+        $user_ids = $request->user_id;
+
+
+        foreach ($user_ids as  $user_id ) {
+            ProjectUser::create([
+                'project_id' => $request->project_id,
+                'user_id' => $user_id
+            ]);
+
+        }
+        return response()->json(['message' => 'Data saved successfully','data']);
+
+//        return response()->json(['message' => 'Data saved successfully','data' => $user_id]);
     }
 
 }

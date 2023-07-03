@@ -12,7 +12,7 @@ class Project extends Model
     protected $fillable = [
         'project_name',
         'description',
-        'created_by',
+        'create_by'
     ];
 
     public function createdBy()
