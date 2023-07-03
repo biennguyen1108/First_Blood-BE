@@ -24,6 +24,6 @@ class LoginController extends Controller
 
         return $this->commonResponse([
             'accessToken'=>$token,
-        ],'logged in',200);
+        ],  'logged in',200);
     }
 }

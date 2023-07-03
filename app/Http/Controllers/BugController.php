@@ -25,6 +25,9 @@ class BugController extends Controller
     public function store(BugRequest $bugRequest)
     {
         $bug = Bug::create([$bugRequest->all()]);
+            if($bug->fails()){
+                return  $this->commonResponse([],"Bug Not Found",400);
+            }
         return  $this->commonResponse($bug,"",200);
     }
 

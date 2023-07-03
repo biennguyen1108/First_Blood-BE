@@ -31,8 +31,6 @@ Route::middleware('auth:sanctum')->group(function () {
         });
     });
     Route::get('project_byuser',[\App\Http\Controllers\GetProjectUser::class,'index']);
-    Route::get('current_user', [\App\Http\Controllers\UserController::class, 'getCurrentUser']);
-
 
 
 });
@@ -42,7 +40,10 @@ Route::post('login', [LoginController::class, 'login']);
 
 //Route::get('user/{id}','show');
 
-Route::middleware(["auth:sanctum", "check-role:2"])->get('user/{id}', [UserController::class, 'show']);
+
+Route::middleware(["auth:sanctum", "check-role:1"])->get('user/{id}', [UserController::class, 'show']);
 Route::post('user', [UserController::class, 'store']);
 Route::post('create_role_user', [\App\Http\Controllers\RoleUserController::class, 'store']);
 Route::post('add_member',[ProjectController::class,'addUserIntoProject']);
+
+
