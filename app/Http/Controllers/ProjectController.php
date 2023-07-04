@@ -45,12 +45,13 @@ class ProjectController extends Controller
 
     public function update(ProjectRequest $projectrequest, $id)
     {
-        $projectrequest = Project::find($id);
-        if (!$projectrequest) {
-            return  $this->commonResponse($projectrequest,"Project not found",200);
+        $project = Project::find($id);
+        if (!$project) {
+            return  $this->commonResponse($projectrequest,"Project not found",404);
         }
-        Project::where('id',$id)->update($projectrequest->toArray());
-        return  $this->commonResponse($projectrequest);
+        $project->update($projectrequest->all());
+        return  $this->commonResponse($project,'',200);
+
     }
 
     public function destroy($id)

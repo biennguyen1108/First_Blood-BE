@@ -46,9 +46,9 @@ class UserController extends Controller
         if (!$user) {
             return $this->commonResponse($userupdaterequest,"User not found",200);
         }
-        User::where('id',$id)->update($userupdaterequest->all());
+        $user->update($userupdaterequest->all());
 
-        return  $this->commonResponse($userupdaterequest->all());
+        return  $this->commonResponse( $user );
     }
 
     public function destroy($id)
