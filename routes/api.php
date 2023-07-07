@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::middleware(['check-role:2'])->group(function () {
         Route::controller(UserController::class)->group(function () {
             Route::get('users', 'index');
@@ -30,18 +31,18 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete('bug/{id}', 'destroy');
         });
     });
+
     Route::get('project_byuser',[\App\Http\Controllers\GetProjectUser::class,'index']);
 
+    Route::get('current-user',[UserController::class,'getCurrentUser']);
 
 });
-//
-//Route::post('user','store');
+
+//Route::get('project/bug/{id}',[BugController::class,'BugByProject']);
+Route::get('project/bug/{id}',[BugController::class,'BugFilter']);
+Route::get('project/member/{id}',[UserController::class,'getUserByProject']);
+
 Route::post('login', [LoginController::class, 'login']);
-
-//Route::get('user/{id}','show');
-
-
-Route::middleware(["auth:sanctum", "check-role:1"])->get('user/{id}', [UserController::class, 'show']);
 Route::post('user', [UserController::class, 'store']);
 Route::post('create_role_user', [\App\Http\Controllers\RoleUserController::class, 'store']);
 Route::post('add_member',[ProjectController::class,'addUserIntoProject']);
