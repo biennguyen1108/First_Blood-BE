@@ -26,10 +26,10 @@ class BugController extends Controller
 
     public function store(BugRequest $bugRequest)
     {
-        $bug = Bug::create([$bugRequest->all()]);
-        if ($bug->fails()) {
-            return $this->commonResponse([], "Bug Not Found", 400);
-        }
+        $bug = Bug::create($bugRequest->all());
+//        if ($bug->fails()) {
+//            return $this->commonResponse([], "Bug Not Found", 400);
+//        }
         return $this->commonResponse($bug, "", 200);
     }
 
@@ -175,6 +175,15 @@ class BugController extends Controller
        $steps = BugSteps::where('bug_id',$id)->get();
 
         return $this->commonResponse($steps);
+
+    }
+
+    public function editStatus(Request $request){
+
+       $step = Bug::where('id', $request->id);
+       $step->update(['status_id'=>$request->status]);
+
+        return $this->commonResponse([],'thanh cong');
 
     }
 }

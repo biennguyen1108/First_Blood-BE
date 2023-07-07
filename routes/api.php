@@ -26,7 +26,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::controller(BugController::class)->group(function () {
             Route::get('bugs', 'index');
             Route::get('bug/{id}', 'show');
-            Route::post('bug', 'store');
             Route::put('bug/{id}', 'update');
             Route::delete('bug/{id}', 'destroy');
         });
@@ -42,6 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('project/bug/{id}',[BugController::class,'BugFilter']);
 Route::get('project/member/{id}',[UserController::class,'getUserByProject']);
 Route::get('steps/{id}',[BugController::class,'getStep']);
+Route::put('edit-status',[BugController::class,'editStatus']);
+
+Route::post('bug', [BugController::class,'store']);
 
 Route::post('login', [LoginController::class, 'login']);
 Route::post('user', [UserController::class, 'store']);
