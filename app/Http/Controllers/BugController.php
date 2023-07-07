@@ -48,9 +48,123 @@ class BugController extends Controller
         if (!$bug) {
             return $this->commonResponse([],"Bug not foundBug not found",404);
         }
-
         $bug->delete();
 
         return $this->commonResponse([],"delete bug",400);
     }
+
+//    public function BugByProject($id){
+//        $bugs = Bug::join('projects', 'bugs.project_id', '=', 'projects.id')
+//            ->join('bug_categories', 'bugs.category_id', '=', 'bug_categories.id')
+//            ->join('status', 'bugs.status_id', '=', 'status.id')
+//            ->join('priority', 'bugs.priority_id', '=', 'priority.id')
+//            ->join('users AS reporter', 'bugs.reporter_by', '=', 'reporter.id')
+//            ->join('users AS assigned_to', 'bugs.assigned_to', '=', 'assigned_to.id')
+//            ->select(
+//                'bugs.id',
+//                'project_id',
+//                'projects.project_name',
+//                'category_id',
+//                'bug_categories.category_name',
+//                'status_id',
+//                'status.status_name',
+//                'priority_id',
+//                'priority.priority_name',
+//                'bugs.reporter_by',
+//                'reporter.email AS reporter_email',
+//                'bugs.assigned_to',
+//                'assigned_to.email AS assigned_email'
+//            )
+//            ->where('projects.id', $id)
+//                ->groupBy('bugs.id')
+//            ->get();
+//
+//        return $this->commonResponse($bugs);
+//    }
+public function BugByProject(Request $request, $id)
+{
+    $nameLike = $request->input('name_like');
+
+    $query = Bug::join('projects', 'bugs.project_id', '=', 'projects.id')
+        ->join('bug_categories', 'bugs.category_id', '=', 'bug_categories.id')
+        ->join('status', 'bugs.status_id', '=', 'status.id')
+        ->join('priority', 'bugs.priority_id', '=', 'priority.id')
+        ->join('users AS reporter', 'bugs.reporter_by', '=', 'reporter.id')
+        ->join('users AS assigned_to', 'bugs.assigned_to', '=', 'assigned_to.id')
+        ->select(
+            'bugs.id',
+            'project_id',
+            'projects.project_name',
+            'category_id',
+            'bug_categories.category_name',
+            'status_id',
+            'status.status_name',
+            'priority_id',
+            'priority.priority_name',
+            'bugs.reporter_by',
+            'reporter.email AS reporter_email',
+            'bugs.assigned_to',
+            'assigned_to.email AS assigned_email'
+        )
+        ->where('projects.id', $id);
+
+    if ($nameLike) {
+        $query->where('status.status_name', 'like', "%{$nameLike}%");
+    }
+
+    $bugs = $query->groupBy('bugs.id')->get();
+
+    return $this->commonResponse($bugs);
+}public function BugFilter(Request $request, $id)
+{
+    $assigned = $request->query('assigned');
+    $reporter = $request->query('reporter');
+    $nameLike = $request->input('name_like');
+    $status = $request->input('status');
+
+
+    $query = Bug::join('projects', 'bugs.project_id', '=', 'projects.id')
+        ->join('bug_categories', 'bugs.category_id', '=', 'bug_categories.id')
+        ->join('status', 'bugs.status_id', '=', 'status.id')
+        ->join('priority', 'bugs.priority_id', '=', 'priority.id')
+        ->join('users AS reporter', 'bugs.reporter_by', '=', 'reporter.id')
+        ->join('users AS assigned_to', 'bugs.assigned_to', '=', 'assigned_to.id')
+        ->select(
+            'bugs.id',
+            'project_id',
+            'projects.project_name',
+            'category_id',
+            'bug_categories.category_name',
+            'status_id',
+            'status.status_name',
+            'priority_id',
+            'priority.priority_name',
+            'bugs.reporter_by',
+            'reporter.email AS reporter_email',
+            'bugs.assigned_to',
+            'assigned_to.email AS assigned_email'
+        )
+        ->where('projects.id', $id);
+
+    if ($assigned) {
+        $query->where('assigned_to.email', $assigned);
+    }
+
+    if ($reporter) {
+        $query->where('reporter.email', $reporter);
+    }
+    if ($nameLike) {
+        $query->where('status.status_name', 'like', "%{$nameLike}%");
+    }
+    if ($status) {
+        $query->where('status.status_name', $status);
+    }
+
+    $bugs = $query->groupBy('bugs.id')->get();
+
+    return $this->commonResponse($bugs);
+}
+
+
+
 }

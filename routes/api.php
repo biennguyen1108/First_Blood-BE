@@ -37,12 +37,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('current-user',[UserController::class,'getCurrentUser']);
 
 });
-//
-//Route::post('user','store');
+
+//Route::get('project/bug/{id}',[BugController::class,'BugByProject']);
+Route::get('project/bug/{id}',[BugController::class,'BugFilter']);
+Route::get('project/member/{id}',[UserController::class,'getUserByProject']);
+
 Route::post('login', [LoginController::class, 'login']);
-
-//Route::get('user/{id}','show');
-
 Route::post('user', [UserController::class, 'store']);
 Route::post('create_role_user', [\App\Http\Controllers\RoleUserController::class, 'store']);
 Route::post('add_member',[ProjectController::class,'addUserIntoProject']);

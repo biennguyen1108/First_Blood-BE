@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\ProjectUser;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
@@ -61,5 +62,16 @@ class UserController extends Controller
         $user->delete();
 
         return $this->commonResponse([], "User not found", 404);
+    }
+
+    public function getUserByProject($id){
+
+        $member=ProjectUser::join('projects', 'project_users.project_id', '=', 'projects.id')
+            ->join('users', 'project_users.user_id', '=', 'users.id')
+            ->select(
+                'users.id',
+                'users.email',
+            )->where('project_id',$id)->get();
+        return $this->commonResponse($member);
     }
 }
