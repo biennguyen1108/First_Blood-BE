@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
 //Route::get('project/bug/{id}',[BugController::class,'BugByProject']);
 Route::get('project/bug/{id}',[BugController::class,'BugFilter']);
 Route::get('project/member/{id}',[UserController::class,'getUserByProject']);
+Route::get('steps/{id}',[BugController::class,'getStep']);
 
 Route::post('login', [LoginController::class, 'login']);
 Route::post('user', [UserController::class, 'store']);
